@@ -18,10 +18,8 @@ public class LoginController {
     @Autowired
     private RoleRepo roleRepo;
 
-    private User user = new User("user123", "user");
-
     @GetMapping("login")
-    private String index(Model model) {
+    private String login(Model model) {
         return "login";
     }
 
@@ -44,6 +42,6 @@ public class LoginController {
         } else {
             userService.createUser(user, roleRepo.findByName("ROLE_USER"));
         }
-        return "redirect:/index";
+        return "redirect:/login";
     }
 }
