@@ -1,0 +1,10 @@
+body {
+    background-color: #fff;
+    -webkit-font-smoothing: antialiased;
+    font-family: 'Oxygen', sans-serif;
+}
+
+.blank{
+    padding-top: 10px;
+}
+
