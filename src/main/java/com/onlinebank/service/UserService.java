@@ -1,11 +1,9 @@
 package com.onlinebank.service;
 
-import com.onlinebank.model.User;
+import com.onlinebank.model.security.User;
 import com.onlinebank.model.security.Role;
-import com.onlinebank.model.security.UserRole;
 
 import java.util.List;
-import java.util.Set;
 
 public interface UserService {
     List<User> findAll();

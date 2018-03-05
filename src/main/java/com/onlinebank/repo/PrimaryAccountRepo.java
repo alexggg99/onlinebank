@@ -1,8 +1,7 @@
 package com.onlinebank.repo;
 
-import com.onlinebank.model.PrimaryAccount;
-import com.onlinebank.model.User;
-import org.springframework.data.repository.CrudRepository;
+import com.onlinebank.model.accounts.PrimaryAccount;
+import org.springframework.data.repository.PagingAndSortingRepository;
 
-public interface PrimaryAccountRepo extends CrudRepository<PrimaryAccount, Long> {
+public interface PrimaryAccountRepo extends PagingAndSortingRepository<PrimaryAccount, Long> {
 }

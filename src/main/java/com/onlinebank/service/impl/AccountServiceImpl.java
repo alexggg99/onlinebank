@@ -1,8 +1,9 @@
 package com.onlinebank.service.impl;
 
-import com.onlinebank.model.Currency;
-import com.onlinebank.model.PrimaryAccount;
-import com.onlinebank.model.SavingAccount;
+import com.onlinebank.model.accounts.Account;
+import com.onlinebank.model.accounts.Currency;
+import com.onlinebank.model.accounts.PrimaryAccount;
+import com.onlinebank.model.accounts.SavingAccount;
 import com.onlinebank.repo.PrimaryAccountRepo;
 import com.onlinebank.repo.SavingAccountRepo;
 import com.onlinebank.service.AccountService;
@@ -43,4 +44,21 @@ public class AccountServiceImpl implements AccountService {
         savingAccountRepo.save(savingAccount);
         return savingAccount;
     }
+
+    @Override
+    public Account getPrimaryAccount(long accountId) {
+        if (primaryAccountRepo.existsById(accountId)) {
+            return primaryAccountRepo.findById(accountId).get();
+        }
+        return null;
+    }
+
+    @Override
+    public Account getSavingAccount(long accountId) {
+        if (savingAccountRepo.existsById(accountId)) {
+            return savingAccountRepo.findById(accountId).get();
+        }
+        return null;
+    }
+
 }

@@ -1,11 +1,9 @@
 package com.onlinebank.model.security;
 
 import javax.persistence.*;
-import com.onlinebank.model.User;
-import lombok.EqualsAndHashCode;
+
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 
 import java.io.Serializable;
 

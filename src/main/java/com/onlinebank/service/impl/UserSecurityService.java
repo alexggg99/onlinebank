@@ -1,6 +1,6 @@
 package com.onlinebank.service.impl;
 
-import com.onlinebank.model.User;
+import com.onlinebank.model.security.User;
 import com.onlinebank.repo.UserRepo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

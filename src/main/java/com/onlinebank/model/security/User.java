@@ -1,17 +1,13 @@
-package com.onlinebank.model;
+package com.onlinebank.model.security;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.onlinebank.model.security.Authority;
-import com.onlinebank.model.security.UserRole;
-import lombok.EqualsAndHashCode;
+import com.onlinebank.model.Recipient;
+import com.onlinebank.model.accounts.PrimaryAccount;
+import com.onlinebank.model.accounts.SavingAccount;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
-import org.springframework.context.annotation.Primary;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-//import org.springframework.security.core.GrantedAuthority;
-//import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.util.Collection;
@@ -45,7 +41,7 @@ public class User implements UserDetails {
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private Set<PrimaryAccount> primaryAccounts;
-    @OneToOne
+    @OneToOne(mappedBy = "user", fetch = FetchType.LAZY)
     private SavingAccount savingAccount;
 
     @OneToMany(mappedBy = "user",fetch = FetchType.LAZY)

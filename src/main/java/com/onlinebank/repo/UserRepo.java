@@ -1,6 +1,6 @@
 package com.onlinebank.repo;
 
-import com.onlinebank.model.User;
+import com.onlinebank.model.security.User;
 import org.springframework.data.repository.CrudRepository;
 
 public interface UserRepo extends CrudRepository<User, Long> {

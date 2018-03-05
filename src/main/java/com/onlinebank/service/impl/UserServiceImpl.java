@@ -1,11 +1,10 @@
 package com.onlinebank.service.impl;
 
-import com.onlinebank.model.Currency;
-import com.onlinebank.model.PrimaryAccount;
-import com.onlinebank.model.User;
+import com.onlinebank.model.accounts.Currency;
+import com.onlinebank.model.accounts.PrimaryAccount;
+import com.onlinebank.model.security.User;
 import com.onlinebank.model.security.Role;
 import com.onlinebank.model.security.UserRole;
-import com.onlinebank.repo.PrimaryAccountRepo;
 import com.onlinebank.repo.UserRepo;
 import com.onlinebank.service.AccountService;
 import com.onlinebank.service.UserService;
@@ -18,7 +17,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -88,7 +86,7 @@ public class UserServiceImpl implements UserService {
             user.setPassword(encryptedPassword);
 
             HashSet<PrimaryAccount> primaryAccounts = new HashSet<>();
-            primaryAccounts.add(accountService.createPrimaryAccount(Currency.RUB));
+            primaryAccounts.add(accountService.createPrimaryAccount(Currency.RUR));
             user.setPrimaryAccounts(primaryAccounts);
             user.setSavingAccount(accountService.createSavingAccount());
 

@@ -1,24 +1,19 @@
-package com.onlinebank.model;
+package com.onlinebank.model.accounts;
 
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.Date;
 
-@Entity
+@MappedSuperclass
 @Getter
 @Setter
-public class PrimaryTransaction {
+public abstract class Transaction {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
-    @ManyToOne
-    @JoinColumn(name = "primary_account_id")
-    private PrimaryAccount primaryAccount;
     private Date date;
     private String description;
     private String type;
@@ -26,11 +21,10 @@ public class PrimaryTransaction {
     private double amount;
     private BigDecimal availableBalance;
 
-    public PrimaryTransaction() {
+    public Transaction() {
     }
 
-    public PrimaryTransaction(PrimaryAccount primaryAccount, Date date, String description, String type, String status, double amount, BigDecimal availableBalance) {
-        this.primaryAccount = primaryAccount;
+    public Transaction(Date date, String description, String type, String status, double amount, BigDecimal availableBalance) {
         this.date = date;
         this.description = description;
         this.type = type;

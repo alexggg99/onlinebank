@@ -1,6 +1,6 @@
 package com.onlinebank.ctrl;
 
-import com.onlinebank.model.User;
+import com.onlinebank.model.security.User;
 import com.onlinebank.repo.RoleRepo;
 import com.onlinebank.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
