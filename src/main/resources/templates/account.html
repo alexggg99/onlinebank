@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="common/header :: common-header"></head>
+<body>
+<div th:replace="common/header :: navbar"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 vertical-padding">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-6 col-md-6">
+            </div>
+            <div class="col-lg-6 col-md-6" th:if="${account != null}">
+                <!--Panel-->
+                <div class="panel panel-info">
+                    <div class="panel-heading">
+                        <div class="row">
+                            <div class="col-xs-6">
+                                <h2 th:text="${title}">Balance</h2>
+                            </div>
+                            <div class="col-xs-6 text-right">
+                                <h1>
+                                    <i class="fa fa-usd" aria-hidden="true"></i>
+                                    <span th:text="${account.accountBalance}"></span>
+                                </h1>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--/.Panel-->
+            </div>
+        </div>
+
+        <div th:if="${pages != null && pages.length > 0}">
+        <!-- table -->
+            <div>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th scope="col">Num</th>
+                            <th scope="col">Date</th>
+                            <th scope="col">Description</th>
+                            <th scope="col">Type</th>
+                            <th scope="col">Status</th>
+                            <th scope="col">Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody th:each="transaction : ${transactions}">
+                    <tr>
+                        <th scope="row" th:text="${transaction.id}"></th>
+                        <td th:text="${transaction.date}"></td>
+                        <td th:text="${transaction.description}"></td>
+                        <td th:text="${transaction.type}"></td>
+                        <td th:text="${transaction.status}"></td>
+                        <td th:text="${transaction.amount}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+                <ul class="pagination" th:each="index : ${pages}">
+                    <li><a th:href="@{/account/primaryAccount(id=${account.id},page=${index})}" th:text="${index}"></a></li>
+                </ul>
+            </div>
+        <!-- table -->
+        </div>
+    </div>
+
+<head th:replace="common/header :: common-footer"></head>
+</body>
+</html>

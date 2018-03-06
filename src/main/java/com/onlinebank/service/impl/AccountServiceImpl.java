@@ -46,11 +46,8 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public Account getPrimaryAccount(long accountId) {
-        if (primaryAccountRepo.existsById(accountId)) {
-            return primaryAccountRepo.findById(accountId).get();
-        }
-        return null;
+    public Account getPrimaryAccount(long accountId, String username) {
+        return primaryAccountRepo.findByIdAndUserUsername(accountId, username);
     }
 
     @Override
