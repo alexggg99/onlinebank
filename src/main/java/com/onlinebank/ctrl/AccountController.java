@@ -1,13 +1,17 @@
 package com.onlinebank.ctrl;
 
 import com.onlinebank.model.accounts.PrimaryAccount;
+import com.onlinebank.model.accounts.PrimaryTransaction;
 import com.onlinebank.repo.PrimaryTransactionRepo;
+import com.onlinebank.repo.specification.TransactionSpecification;
 import com.onlinebank.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -28,13 +32,24 @@ public class AccountController {
     private int itemsPerPage;
 
     @RequestMapping("/primaryAccount")
-    public String primaryAccount(@RequestParam("id") int id, @RequestParam("page") int page, Model model, Principal principal) {
+    public String primaryAccount(@RequestParam("id") int id,
+                                 @RequestParam("page") int page,
+                                 @RequestParam("filter") String filter,
+                                 Model model,
+                                 Principal principal) {
         model.addAttribute("title", "Primary account");
         PrimaryAccount primaryAccount = (PrimaryAccount) accountService.getPrimaryAccount(id, principal.getName());
         if (primaryAccount != null) {
             model.addAttribute("account", primaryAccount);
-            model.addAttribute("pages", IntStream.range(1, countPageNum(primaryAccount.getTransactionList().size()) + 1).toArray());
-            model.addAttribute("transactions", primaryTransactionRepo.findByAccountAndAccount_UserUsername(primaryAccount, principal.getName(), PageRequest.of(--page, itemsPerPage)));
+            if (StringUtils.isEmpty(filter)) {
+                model.addAttribute("transactions", primaryTransactionRepo.findByAccount(primaryAccount, PageRequest.of(--page, itemsPerPage)));
+                model.addAttribute("pages", IntStream.range(1, countPageNum(primaryAccount.getTransactionList().size()) + 1).toArray());
+            } else {
+                Page<PrimaryTransaction> pagable =  primaryTransactionRepo.findAll(TransactionSpecification.findAll(principal.getName(), filter), PageRequest.of(--page, itemsPerPage));
+                model.addAttribute("transactions", pagable.getContent());
+                model.addAttribute("pages", IntStream.range(1, pagable.getTotalPages() + 1).toArray());
+                model.addAttribute("filter", filter);
+            }
         }
         return "account";
     }

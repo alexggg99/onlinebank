@@ -32,9 +32,9 @@
             </div>
         </div>
 
-        <div th:if="${pages != null && pages.length > 0}">
         <!-- table -->
             <div>
+                <div><input id="transactionFilter"/></div>
                 <table class="table table-striped">
                     <thead>
                         <tr>
@@ -58,11 +58,10 @@
                     </tbody>
                 </table>
                 <ul class="pagination" th:each="index : ${pages}">
-                    <li><a th:href="@{/account/primaryAccount(id=${account.id},page=${index})}" th:text="${index}"></a></li>
+                    <li><a th:href="@{/account/primaryAccount(id=${account.id},page=${index}, filter=${filter})}" th:text="${index}"></a></li>
                 </ul>
             </div>
         <!-- table -->
-        </div>
     </div>
 
 <head th:replace="common/header :: common-footer"></head>
