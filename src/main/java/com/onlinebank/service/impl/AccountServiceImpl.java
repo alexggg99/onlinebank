@@ -51,11 +51,8 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public Account getSavingAccount(long accountId) {
-        if (savingAccountRepo.existsById(accountId)) {
-            return savingAccountRepo.findById(accountId).get();
-        }
-        return null;
+    public Account getSavingAccount(long accountId, String username) {
+        return savingAccountRepo.findByIdAndUserUsername(accountId, username);
     }
 
 }

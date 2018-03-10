@@ -29,3 +29,6 @@ insert into primary_transaction(id, date, status, amount, available_balance, acc
 values (10, to_date('04-02-2018 23:19:40', 'dd-MM-yyyy hh:mm:ss'), 'ok', 20, 40, 1);
 insert into primary_transaction(id, date, status, amount, available_balance, account_id)
 values (11, to_date('04-02-2018 08:55:14', 'dd-MM-yyyy hh:mm:ss'), 'ok', 100, 140, 1);
+
+insert into saving_transaction(id, date, status, amount, available_balance, account_id)
+values (1, to_date('01-02-2018 16:20:24', 'dd-MM-yyyy hh:mm:ss'), 'ok', 100, 140, 1);

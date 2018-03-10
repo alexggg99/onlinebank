@@ -57,9 +57,11 @@
                     </tr>
                     </tbody>
                 </table>
-                <ul class="pagination" th:each="index : ${pages}">
-                    <li><a th:href="@{/account/primaryAccount(id=${account.id},page=${index}, filter=${filter})}" th:text="${index}"></a></li>
-                </ul>
+                <div th:with="baseUrl=(${servlet} == 'savingAccount'? '/account/savingAccount' : '/account/primaryAccount')">
+                    <ul class="pagination" th:each="index : ${pages}">
+                        <li><a th:href="@{${baseUrl}(id=${account.id},page=${index}, filter=${filter})}" th:text="${index}"></a></li>
+                    </ul>
+                </div>
             </div>
         <!-- table -->
     </div>

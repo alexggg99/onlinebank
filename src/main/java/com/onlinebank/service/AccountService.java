@@ -9,5 +9,5 @@ public interface AccountService {
     PrimaryAccount createPrimaryAccount(Currency currency);
     SavingAccount createSavingAccount();
     Account getPrimaryAccount(long accountId, String username);
-    Account getSavingAccount(long accountId);
+    Account getSavingAccount(long accountId, String username);
 }
