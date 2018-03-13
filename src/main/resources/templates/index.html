@@ -61,11 +61,45 @@
             </div>
             <!--/.Panel-->
         </div>
+        <div class="col-lg-6 col-md-6">
+            <div class="col-lg-6 col-md-6">
+                <div class="panel panel-warning">
+                    <div class="panel-heading">
+                        <div class="row">
+                            <div class="text-right padding-right-20">
+                                <h1>
+                                    <i class="fa fa-university"></i>
+                                </h1>
+                            </div>
+                        </div>
+                    </div>
+                    <a th:href="@{/account/deposit}">
+                        <div class="panel-body">
+                            <span class="pull-left">Deposit money</span>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-6">
+                <div class="panel panel-warning">
+                    <div class="panel-heading">
+                        <div class="row">
+                            <div class="text-right padding-right-20">
+                                <h1>
+                                    <i class="fa fa-credit-card"></i>
+                                </h1>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-body">Withdraw money</div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
 
-<head th:replace="common/header :: common-footer"></head>
+<footer th:replace="common/header :: common-footer"></footer>
 
 </body>
 </html>

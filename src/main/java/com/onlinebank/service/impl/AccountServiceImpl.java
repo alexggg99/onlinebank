@@ -12,6 +12,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 @Transactional
 @Service
@@ -23,6 +25,14 @@ public class AccountServiceImpl implements AccountService {
     private PrimaryAccountRepo primaryAccountRepo;
     @Autowired
     private SavingAccountRepo savingAccountRepo;
+
+    @Override
+    public List<Account> getAllAccounts(String username) {
+        List<Account> accounts = new ArrayList<>();
+        accounts.addAll(primaryAccountRepo.findByUser_Username(username));
+        accounts.addAll(savingAccountRepo.findByUser_Username(username));
+        return accounts;
+    }
 
     @Override
     public PrimaryAccount createPrimaryAccount(Currency currency) {
@@ -55,4 +65,9 @@ public class AccountServiceImpl implements AccountService {
         return savingAccountRepo.findByIdAndUserUsername(accountId, username);
     }
 
+    @Override
+    public boolean depositMoney(Account account, BigDecimal amount) {
+        account.setAccountBalance(account.getAccountBalance().add(amount));
+        return true;
+    }
 }
