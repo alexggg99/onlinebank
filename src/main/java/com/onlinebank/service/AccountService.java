@@ -10,9 +10,9 @@ import java.util.List;
 
 public interface AccountService {
     List<Account> getAllAccounts(String username);
-    PrimaryAccount createPrimaryAccount(Currency currency);
-    SavingAccount createSavingAccount();
+    PrimaryAccount createPrimaryAccount(Currency currency, String username);
+    SavingAccount createSavingAccount(String username);
     Account getPrimaryAccount(long accountId, String username);
     Account getSavingAccount(long accountId, String username);
-    boolean depositMoney(Account account, BigDecimal amount);
+    void depositMoney(String accountId, BigDecimal amount, String username);
 }

@@ -1,7 +1,5 @@
 package com.onlinebank.service.impl;
 
-import com.onlinebank.model.accounts.Currency;
-import com.onlinebank.model.accounts.PrimaryAccount;
 import com.onlinebank.model.security.User;
 import com.onlinebank.model.security.Role;
 import com.onlinebank.model.security.UserRole;
@@ -15,7 +13,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashSet;
 import java.util.List;
 
 @Service
@@ -84,11 +81,6 @@ public class UserServiceImpl implements UserService {
         } else {
             String encryptedPassword = encoder.encode(user.getPassword());
             user.setPassword(encryptedPassword);
-
-            HashSet<PrimaryAccount> primaryAccounts = new HashSet<>();
-            primaryAccounts.add(accountService.createPrimaryAccount(Currency.RUR));
-            user.setPrimaryAccounts(primaryAccounts);
-            user.setSavingAccount(accountService.createSavingAccount());
 
             localUser = userRepo.save(user);
 

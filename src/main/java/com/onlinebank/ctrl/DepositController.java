@@ -65,16 +65,10 @@ public class DepositController {
 
     @PostMapping("/deposit")
     public String depositPost(Model model, @Valid @ModelAttribute("command") FormCommand command, Errors result, Principal principal) {
-        Account account;
         if (result.hasErrors() || command.getAmount().intValue() < 0) {
             return "deposit";
         }
-        if(command.accountId.startsWith("P")) {
-            account = accountService.getPrimaryAccount(Long.valueOf(command.accountId.substring(1)), principal.getName());
-        } else {
-            account = accountService.getSavingAccount(Long.valueOf(command.accountId.substring(1)), principal.getName());
-        }
-        accountService.depositMoney(account, command.getAmount());
+        accountService.depositMoney(command.accountId, command.getAmount(), principal.getName());
         return "redirect:/account/deposit?success";
     }
 

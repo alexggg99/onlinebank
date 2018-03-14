@@ -15,7 +15,7 @@ public abstract class Account {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    private Long id;
     private int accountNumber;
     private BigDecimal accountBalance;
 
