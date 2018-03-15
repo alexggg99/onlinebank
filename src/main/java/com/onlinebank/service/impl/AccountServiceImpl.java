@@ -74,25 +74,42 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public void depositMoney(String accountId, BigDecimal amount, String username) {
+    public void saveAccount(Account account) {
+        if (account instanceof PrimaryAccount) {
+            primaryAccountRepo.save((PrimaryAccount) account);
+        } else {
+            savingAccountRepo.save((SavingAccount) account);
+        }
+    }
+
+    @Override
+    public void manageAccount(String action, String accountId, BigDecimal amount, String username) {
         Account account;
         Calendar calendar = Calendar.getInstance();
         if(accountId.startsWith("P")) {
             account = getPrimaryAccount(Long.valueOf(accountId.substring(1)), username);
-            account.setAccountBalance(account.getAccountBalance().add(amount));
+            if ("deposit".equals(action)) {
+                account.setAccountBalance(account.getAccountBalance().add(amount));
+            } else {
+                account.setAccountBalance(account.getAccountBalance().subtract(amount));
+            }
             primaryAccountRepo.save((PrimaryAccount) account);
 
-            PrimaryTransaction primaryTransaction = new PrimaryTransaction(new Timestamp(calendar.getTime().getTime()),"Deposit account",
-                                                                            "deposit",
+            PrimaryTransaction primaryTransaction = new PrimaryTransaction(new Timestamp(calendar.getTime().getTime()),"",
+                                                                            action,
                                                                             "ok", amount.doubleValue(), account.getAccountBalance(), (PrimaryAccount) account);
             primaryTransactionRepo.save(primaryTransaction);
         } else {
             account = getSavingAccount(Long.valueOf(accountId.substring(1)), username);
-            account.setAccountBalance(account.getAccountBalance().add(amount));
+            if ("deposit".equals(action)) {
+                account.setAccountBalance(account.getAccountBalance().add(amount));
+            } else {
+                account.setAccountBalance(account.getAccountBalance().subtract(amount));
+            }
             savingAccountRepo.save((SavingAccount) account);
 
-            SavingTransaction savingTransaction = new SavingTransaction(new Timestamp(calendar.getTime().getTime()),"Deposit account",
-                                                                        "deposit",
+            SavingTransaction savingTransaction = new SavingTransaction(new Timestamp(calendar.getTime().getTime()),"",
+                                                                        action,
                                                                         "ok", amount.doubleValue(), account.getAccountBalance(), (SavingAccount) account);
 
             savingTransactionRepo.save(savingTransaction);

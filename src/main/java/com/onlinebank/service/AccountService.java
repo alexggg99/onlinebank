@@ -14,5 +14,6 @@ public interface AccountService {
     SavingAccount createSavingAccount(String username);
     Account getPrimaryAccount(long accountId, String username);
     Account getSavingAccount(long accountId, String username);
-    void depositMoney(String accountId, BigDecimal amount, String username);
+    void saveAccount(Account account);
+    void manageAccount(String action, String accountId, BigDecimal amount, String username);
 }

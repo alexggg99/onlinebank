@@ -8,7 +8,6 @@ import lombok.Data;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomNumberEditor;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -60,23 +59,35 @@ public class DepositController {
 
     @GetMapping("/deposit")
     public String deposit(Model model, Principal principal){
+        model.addAttribute("url", "deposit");
         return "deposit";
     }
 
     @PostMapping("/deposit")
     public String depositPost(Model model, @Valid @ModelAttribute("command") FormCommand command, Errors result, Principal principal) {
         if (result.hasErrors() || command.getAmount().intValue() < 0) {
+            model.addAttribute("url", "deposit");
             return "deposit";
         }
-        accountService.depositMoney(command.accountId, command.getAmount(), principal.getName());
+        accountService.manageAccount("deposit", command.accountId, command.getAmount(), principal.getName());
         return "redirect:/account/deposit?success";
     }
 
-    @ResponseStatus(HttpStatus.OK)
-    @ExceptionHandler(NumberFormatException.class)
-    public String handleFormatException(Model model) {
-        model.addAttribute("formatException", true);
-        return "forward:/account/deposit";
+    @GetMapping("/withdraw")
+    public String withdraw(Model model, Principal principal){
+        model.addAttribute("url", "withdraw");
+        return "deposit";
+    }
+
+
+    @PostMapping("/withdraw")
+    public String withdrawPost(Model model, @Valid @ModelAttribute("command") FormCommand command, Errors result, Principal principal) {
+        if (result.hasErrors() || command.getAmount().intValue() < 0) {
+            model.addAttribute("url", "withdraw");
+            return "deposit";
+        }
+        accountService.manageAccount("withdraw", command.accountId, command.getAmount(), principal.getName());
+        return "redirect:/account/withdraw?success";
     }
 
     @Getter
