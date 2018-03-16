@@ -1,11 +1,7 @@
 package com.onlinebank.ctrl;
 
-import com.onlinebank.model.accounts.PrimaryAccount;
-import com.onlinebank.model.accounts.PrimaryTransaction;
-import com.onlinebank.model.accounts.SavingAccount;
-import com.onlinebank.model.accounts.SavingTransaction;
-import com.onlinebank.repo.PrimaryTransactionRepo;
-import com.onlinebank.repo.SavingTransactionRepo;
+import com.onlinebank.model.accounts.*;
+import com.onlinebank.repo.TransactionRepo;
 import com.onlinebank.repo.specification.TransactionSpecification;
 import com.onlinebank.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,10 +25,7 @@ public class AccountController {
     private AccountService accountService;
 
     @Autowired
-    private PrimaryTransactionRepo primaryTransactionRepo;
-
-    @Autowired
-    private SavingTransactionRepo savingTransactionRepo;
+    private TransactionRepo transactionRepo;
 
     @Value("${app.itemsPerPage}")
     private int itemsPerPage;
@@ -46,18 +39,7 @@ public class AccountController {
         model.addAttribute("title", "Primary account");
         model.addAttribute("servlet", "primaryAccount");
         PrimaryAccount primaryAccount = (PrimaryAccount) accountService.getPrimaryAccount(id, principal.getName());
-        if (primaryAccount != null) {
-            model.addAttribute("account", primaryAccount);
-            if (StringUtils.isEmpty(filter)) {
-                model.addAttribute("transactions", primaryTransactionRepo.findByAccount(primaryAccount, PageRequest.of(--page, itemsPerPage)));
-                model.addAttribute("pages", IntStream.range(1, countPageNum(primaryAccount.getTransactionList().size()) + 1).toArray());
-            } else {
-                Page<PrimaryTransaction> pagable =  primaryTransactionRepo.findAll(TransactionSpecification.findAll(principal.getName(), filter), PageRequest.of(--page, itemsPerPage));
-                model.addAttribute("transactions", pagable.getContent());
-                model.addAttribute("pages", IntStream.range(1, pagable.getTotalPages() + 1).toArray());
-                model.addAttribute("filter", filter);
-            }
-        }
+        complementResponce(model, primaryAccount, filter, principal, page);
         return "account";
     }
 
@@ -70,19 +52,23 @@ public class AccountController {
         model.addAttribute("title", "Saving account");
         model.addAttribute("servlet", "savingAccount");
         SavingAccount savingAccount = (SavingAccount) accountService.getSavingAccount(id, principal.getName());
-        if (savingAccount != null) {
-            model.addAttribute("account", savingAccount);
+        complementResponce(model, savingAccount, filter, principal, page);
+        return "account";
+    }
+
+    private void complementResponce(Model model, Account account, String filter, Principal principal, int page){
+        if (account != null) {
+            model.addAttribute("account", account);
             if (StringUtils.isEmpty(filter)) {
-                model.addAttribute("transactions", savingTransactionRepo.findByAccount(savingAccount, PageRequest.of(--page, itemsPerPage)));
-                model.addAttribute("pages", IntStream.range(1, countPageNum(savingAccount.getTransactionList().size()) + 1).toArray());
+                model.addAttribute("transactions", transactionRepo.findByAccountAndAccountUserUsername(account, principal.getName(), PageRequest.of(--page, itemsPerPage)));
+                model.addAttribute("pages", IntStream.range(1, countPageNum(account.getTransactionList().size()) + 1).toArray());
             } else {
-                Page<SavingTransaction> pagable =  savingTransactionRepo.findAll(TransactionSpecification.findAll2(principal.getName(), filter), PageRequest.of(--page, itemsPerPage));
+                Page<Transaction> pagable =  transactionRepo.findAll(TransactionSpecification.findAll(principal.getName(), account, filter), PageRequest.of(--page, itemsPerPage));
                 model.addAttribute("transactions", pagable.getContent());
                 model.addAttribute("pages", IntStream.range(1, pagable.getTotalPages() + 1).toArray());
                 model.addAttribute("filter", filter);
             }
         }
-        return "account";
     }
 
     private int countPageNum(int result) {

@@ -2,8 +2,6 @@ package com.onlinebank.model.security;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.onlinebank.model.Recipient;
-import com.onlinebank.model.accounts.PrimaryAccount;
-import com.onlinebank.model.accounts.SavingAccount;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
@@ -38,11 +36,6 @@ public class User implements UserDetails {
         this.username = username;
         this.password = password;
     }
-
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-    private Set<PrimaryAccount> primaryAccounts;
-    @OneToOne(mappedBy = "user", fetch = FetchType.LAZY)
-    private SavingAccount savingAccount;
 
     @OneToMany(mappedBy = "user",fetch = FetchType.LAZY)
     private List<Recipient> recipientList;
