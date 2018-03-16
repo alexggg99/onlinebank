@@ -22,12 +22,12 @@ public class IndexController {
     private SavingAccountRepo savingAccountRepo;
 
     @GetMapping("/")
-    private String home() {
+    public String home() {
         return "redirect:/index";
     }
 
     @GetMapping("/index")
-    private String user(Principal principal, Model model) {
+    public String user(Principal principal, Model model) {
         model.addAttribute("primaryAccounts", primaryAccountRepo.findByUserUsernameOrderById(principal.getName()));
         List<SavingAccount> savingAccountList = savingAccountRepo.findByUserUsernameOrderById(principal.getName());
         if (savingAccountList.size() > 0) {
@@ -35,4 +35,23 @@ public class IndexController {
         }
         return "index";
     }
+
+    @GetMapping("/primaryAccounts")
+    public String primaryAccounts(Principal principal, Model model) {
+        model.addAttribute("accountBalance", "Primary balance");
+        model.addAttribute("accounts", primaryAccountRepo.findByUserUsernameOrderById(principal.getName()));
+        model.addAttribute("detailsURL", "/account/primaryAccount");
+        model.addAttribute("referenceCssClass", "panel-info");
+        return "accountsView";
+    }
+
+    @GetMapping("/savingAccounts")
+    public String savingAccounts(Principal principal, Model model) {
+        model.addAttribute("accountBalance", "Saving balance");
+        model.addAttribute("accounts", primaryAccountRepo.findByUserUsernameOrderById(principal.getName()));
+        model.addAttribute("detailsURL", "/account/savingAccount");
+        model.addAttribute("referenceCssClass", "panel-success");
+        return "accountsView";
+    }
+
 }

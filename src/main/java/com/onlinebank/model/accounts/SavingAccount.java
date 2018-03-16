@@ -9,4 +9,5 @@ import javax.persistence.*;
 @Getter
 @Setter
 public class SavingAccount extends Account {
+    //by default currency is RUR
 }

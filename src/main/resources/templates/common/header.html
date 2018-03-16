@@ -29,7 +29,7 @@
 
 </head>
 
-<body ng-app="stateApp">
+<body>
 
 
 <!-- Navigation -->
@@ -58,9 +58,9 @@
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Accounts <span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                            <li><a th:href="@{/account/primaryAccount}">Primary</a></li>
+                            <li><a th:href="@{/primaryAccounts}">Primary</a></li>
                             <li role="separator" class="divider"></li>
-                            <li><a th:href="@{/account/savingsAccount}">Savings</a></li>
+                            <li><a th:href="@{/savingAccounts}">Savings</a></li>
                         </ul>
                     </li>
                     <li class="dropdown">

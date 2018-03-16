@@ -20,7 +20,9 @@
                         </div>
                         <div class="col-xs-6 text-right">
                             <h1>
-                                <i class="fa fa-usd" aria-hidden="true"></i>
+                                <span th:switch="${primaryAccount.currency.name()}">
+                                    <span th:replace="common/body :: switch-currency"></span>
+                                </span>
                                 <span th:text="${primaryAccount.accountBalance}"></span>
                             </h1>
                         </div>
@@ -45,7 +47,9 @@
                             </div>
                             <div class="col-xs-6 text-right">
                                 <h1>
-                                    <i class="fa fa-usd" aria-hidden="true"></i>
+                                    <span th:switch="'RUR'">
+                                        <span th:replace="common/body :: switch-currency"></span>
+                                    </span>
                                     <span th:text="${savingAccount.accountBalance}"></span>
                                 </h1>
                             </div>

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3" lang="en">
+<head>
+</head>
+
+<body>
+
+<span th:fragment="switch-currency">
+    <span th:case="'USD'">
+        <!-- print object is new and active -->
+        <i class="fa fa-usd" aria-hidden="true"></i>
+    </span>
+    <span th:case="'EUR'">
+        <!-- print object is new and active -->
+        <i class="fa fa-euro" aria-hidden="true"></i>
+    </span>
+    <span th:case="'RUR'">
+        <!-- print object is not active -->
+        <i class="fa fa-rub" aria-hidden="true"></i>
+    </span>
+</span>
+
+</body>
+</html>
