@@ -39,6 +39,7 @@ public class IndexController {
     @GetMapping("/primaryAccounts")
     public String primaryAccounts(Principal principal, Model model) {
         model.addAttribute("accountBalance", "Primary balance");
+        model.addAttribute("currency", true);
         model.addAttribute("accounts", primaryAccountRepo.findByUserUsernameOrderById(principal.getName()));
         model.addAttribute("detailsURL", "/account/primaryAccount");
         model.addAttribute("referenceCssClass", "panel-info");
@@ -48,7 +49,8 @@ public class IndexController {
     @GetMapping("/savingAccounts")
     public String savingAccounts(Principal principal, Model model) {
         model.addAttribute("accountBalance", "Saving balance");
-        model.addAttribute("accounts", primaryAccountRepo.findByUserUsernameOrderById(principal.getName()));
+        model.addAttribute("currency", false);
+        model.addAttribute("accounts", savingAccountRepo.findByUserUsernameOrderById(principal.getName()));
         model.addAttribute("detailsURL", "/account/savingAccount");
         model.addAttribute("referenceCssClass", "panel-success");
         return "accountsView";

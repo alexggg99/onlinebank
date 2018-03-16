@@ -21,8 +21,17 @@
                         </div>
                         <div class="col-xs-6 text-right">
                             <h1>
-                                <span th:switch="${account.currency.name()}">
-                                    <span th:replace="common/body :: switch-currency"></span>
+                                <!-- IF CURRENCY PROPERTY EXISTS -->
+                                <span th:if="${currency}">
+                                    <span th:switch="${account.currency.name()}">
+                                        <span th:replace="common/body :: switch-currency"></span>
+                                    </span>
+                                </span>
+                                <!-- ELSE -->
+                                <span th:unless="${currency}">
+                                    <span th:switch="${'RUR'}">
+                                        <span th:replace="common/body :: switch-currency"></span>
+                                    </span>
                                 </span>
                                 <span th:text="${account.accountBalance}"></span>
                             </h1>
