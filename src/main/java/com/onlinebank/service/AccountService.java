@@ -16,4 +16,5 @@ public interface AccountService {
     Account getSavingAccount(long accountId, String username);
     void saveAccount(Account account);
     void manageAccount(String action, String accountId, BigDecimal amount, String username);
+    void transferBetweenAccounts(String accountIdFrom, String accountIdTo, BigDecimal amount, String username);
 }
