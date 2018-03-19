@@ -3,12 +3,14 @@ package com.onlinebank.ctrl;
 import com.onlinebank.model.accounts.SavingAccount;
 import com.onlinebank.repo.PrimaryAccountRepo;
 import com.onlinebank.repo.SavingAccountRepo;
+import com.onlinebank.service.RatesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import java.security.Principal;
+import java.util.Date;
 import java.util.List;
 
 
@@ -20,6 +22,9 @@ public class IndexController {
 
     @Autowired
     private SavingAccountRepo savingAccountRepo;
+
+    @Autowired
+    private RatesService ratesService;
 
     @GetMapping("/")
     public String home() {
@@ -33,13 +38,14 @@ public class IndexController {
         if (savingAccountList.size() > 0) {
             model.addAttribute("savingAccount", savingAccountList.get(0));
         }
+        model.addAttribute("currency", ratesService.getRates(new Date()));
         return "index";
     }
 
     @GetMapping("/primaryAccounts")
     public String primaryAccounts(Principal principal, Model model) {
         model.addAttribute("accountBalance", "Primary balance");
-        model.addAttribute("currency", true);
+        model.addAttribute("add", true);
         model.addAttribute("accounts", primaryAccountRepo.findByUserUsernameOrderById(principal.getName()));
         model.addAttribute("detailsURL", "/account/primaryAccount");
         model.addAttribute("referenceCssClass", "panel-info");
@@ -49,7 +55,7 @@ public class IndexController {
     @GetMapping("/savingAccounts")
     public String savingAccounts(Principal principal, Model model) {
         model.addAttribute("accountBalance", "Saving balance");
-        model.addAttribute("currency", false);
+        model.addAttribute("add", false);
         model.addAttribute("accounts", savingAccountRepo.findByUserUsernameOrderById(principal.getName()));
         model.addAttribute("detailsURL", "/account/savingAccount");
         model.addAttribute("referenceCssClass", "panel-success");

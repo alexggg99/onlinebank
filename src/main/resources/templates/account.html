@@ -21,7 +21,9 @@
                             </div>
                             <div class="col-xs-6 text-right">
                                 <h1>
-                                    <i class="fa fa-usd" aria-hidden="true"></i>
+                                <span th:switch="${account.currency.name()}">
+                                    <span th:replace="common/body :: switch-currency"></span>
+                                </span>
                                     <span th:text="${account.accountBalance}"></span>
                                 </h1>
                             </div>

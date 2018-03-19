@@ -14,4 +14,9 @@ public class PrimaryAccount extends Account {
     @Enumerated(EnumType.STRING)
     private Currency currency;
 
+    @Override
+    public Currency getCurrency() {
+        return currency;
+    }
+
 }

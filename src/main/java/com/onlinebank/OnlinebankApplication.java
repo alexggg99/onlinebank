@@ -31,7 +31,7 @@ public class OnlinebankApplication implements ApplicationRunner {
 	@Override
 	public void run(ApplicationArguments args) throws Exception {
 
-		PrimaryAccount primaryAccount = accountService.createPrimaryAccount(Currency.RUR, "user");
+		PrimaryAccount primaryAccount = accountService.createPrimaryAccount(Currency.EUR, "user");
 		SavingAccount savingAccount = accountService.createSavingAccount("user");
 
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss");

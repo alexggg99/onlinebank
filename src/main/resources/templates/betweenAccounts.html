@@ -30,17 +30,17 @@
                    th:each="error : ${#fields.errors('global')}"
                    th:text="${error}">Validation error</p>
                 <div class="form-group">
-                    <label for="accountType">1. Select account from</label>
-                    <select class="form-control" id="accountType" th:field="*{accountIdFrom}" name="account" required="true">
-                        <option th:each="account : ${accounts}" th:value="${account.type} == 'Saving' ? 'S' + ${account.id} : 'P' + ${account.id}"
-                                th:text="${account.type} + ' ' + ${account.currency} + ' ' + ${account.accountBalance}"></option>
+                    <label for="accountFrom">1. Select account from</label>
+                    <select class="form-control" id="accountFrom" th:field="*{accountIdFrom}" name="account" required="true">
+                        <option th:each="account : ${accounts}" th:value="${account.type} == 'Saving' ? 'S' + ${account.currency.name()} + ${account.id} : 'P' + ${account.currency.name()} + ${account.id}"
+                                th:text="${account.type} + ' ' + ${account.currency.name()} + ' ' + ${account.accountBalance}"></option>
                     </select>
                 </div>
                 <div class="form-group">
-                    <label for="accountType">1. Select account to</label>
-                    <select class="form-control" id="accountType" th:field="*{accountIdTo}" name="account" required="true">
-                        <option th:each="account : ${accounts}" th:value="${account.type} == 'Saving' ? 'S' + ${account.id} : 'P' + ${account.id}"
-                                th:text="${account.type} + ' ' + ${account.currency} + ' ' + ${account.accountBalance}"></option>
+                    <label for="accountTo">1. Select account to</label>
+                    <select class="form-control" id="accountTo" th:field="*{accountIdTo}" name="account" required="true">
+                        <option th:each="account : ${accounts}" th:value="${account.type} == 'Saving' ? 'S' + ${account.currency.name()} + ${account.id} : 'P' + ${account.currency.name()} + ${account.id}"
+                                th:text="${account.type} + ' ' + ${account.currency.name()} + ' ' + ${account.accountBalance}"></option>
                     </select>
                 </div>
                 <div class="form-group" th:classappend="${#fields.hasErrors('amount')}? 'has-error'">
@@ -50,7 +50,11 @@
                         Incorrect
                     </span>
                 </div>
-
+                <div id="exchange" hidden="hidden">
+                    <div class="panel panel-danger">
+                        <div class="panel-body">Consider current exchange rates !</div>
+                    </div>
+                </div>
                 <a type="button" class="btn btn-secondary" th:href="@{/}">Back</a>
                 <button type="submit" class="btn btn-success" >Submit</button>
             </form>
@@ -61,6 +65,7 @@
 
 
 <footer th:replace="common/header :: common-footer"></footer>
+<script th:src="@{/js/transferBetween.js}"></script>
 
 </body>
 </html>

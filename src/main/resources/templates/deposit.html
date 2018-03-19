@@ -26,7 +26,7 @@
                     <label for="accountType">1. Select account</label>
                     <select class="form-control" id="accountType" th:field="*{accountId}" name="account" required="true">
                         <option th:each="account : ${accounts}" th:value="${account.type} == 'Saving' ? 'S' + ${account.id} : 'P' + ${account.id}"
-                                th:text="${account.type} + ' ' + ${account.currency} + ' ' + ${account.accountBalance}"></option>
+                                th:text="${account.type} + ' ' + ${account.currency.name()} + ' ' + ${account.accountBalance}"></option>
                     </select>
                 </div>
                 <div class="form-group" th:classappend="${#fields.hasErrors('amount')}? 'has-error'">

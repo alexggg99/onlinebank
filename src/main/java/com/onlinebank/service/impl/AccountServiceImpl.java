@@ -5,6 +5,7 @@ import com.onlinebank.exceptions.NotEnoughAccountBalance;
 import com.onlinebank.model.accounts.*;
 import com.onlinebank.repo.*;
 import com.onlinebank.service.AccountService;
+import com.onlinebank.service.RatesService;
 import com.onlinebank.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,6 +29,8 @@ public class AccountServiceImpl implements AccountService {
     private TransactionRepo transactionRepo;
     @Autowired
     private UserService userService;
+    @Autowired
+    private RatesService ratesService;
 
     @Override
     public List<Account> getAllAccounts(String username) {
@@ -105,37 +108,38 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     @Transactional
-    public void transferBetweenAccounts(String accountIdFrom, String accountIdTo, BigDecimal amount, String username) {
+    public String transferBetweenAccounts(String accountIdFrom, String accountIdTo, BigDecimal amount, String username) {
         Account accountFrom;
         Account accountTo;
         Calendar calendar = Calendar.getInstance();
         if(accountIdFrom.startsWith("P")) {
-            accountFrom = getPrimaryAccount(Long.valueOf(accountIdFrom.substring(1)), username);
+            accountFrom = getPrimaryAccount(Long.valueOf(accountIdFrom.substring(4)), username);
         } else {
-            accountFrom = getSavingAccount(Long.valueOf(accountIdFrom.substring(1)), username);
+            accountFrom = getSavingAccount(Long.valueOf(accountIdFrom.substring(4)), username);
         }
         if(accountIdTo.startsWith("P")) {
-            accountTo = getPrimaryAccount(Long.valueOf(accountIdTo.substring(1)), username);
+            accountTo = getPrimaryAccount(Long.valueOf(accountIdTo.substring(4)), username);
         } else {
-            accountTo = getSavingAccount(Long.valueOf(accountIdTo.substring(1)), username);
+            accountTo = getSavingAccount(Long.valueOf(accountIdTo.substring(4)), username);
         }
         if (accountFrom == null || accountTo == null || accountFrom.getId() == accountTo.getId()) {
             throw new GeneralException();
         }
         if (accountFrom.getAccountBalance().compareTo(amount) >= 0) {
+            BigDecimal amountToTransfer = ratesService.exchangeAmmount(accountFrom, accountTo, amount);
             accountFrom.setAccountBalance(accountFrom.getAccountBalance().subtract(amount));
-            accountTo.setAccountBalance(accountTo.getAccountBalance().add(amount));
+            accountTo.setAccountBalance(accountTo.getAccountBalance().add(amountToTransfer));
+            Transaction transactionFrom = new Transaction(new Timestamp(calendar.getTime().getTime()),"",
+                    "transfer",
+                    "ok", amount.negate().doubleValue(), accountFrom.getAccountBalance(), accountFrom);
+            Transaction transactionTo = new Transaction(new Timestamp(calendar.getTime().getTime()),"",
+                    "transfer",
+                    "ok", amountToTransfer.doubleValue(), accountFrom.getAccountBalance(), accountTo);
+            transactionRepo.save(transactionFrom);
+            transactionRepo.save(transactionTo);
         } else {
             throw new NotEnoughAccountBalance();
         }
-
-        Transaction transactionFrom = new Transaction(new Timestamp(calendar.getTime().getTime()),"",
-                "transfer",
-                "ok", amount.negate().doubleValue(), accountFrom.getAccountBalance(), accountFrom);
-        Transaction transactionTo = new Transaction(new Timestamp(calendar.getTime().getTime()),"",
-                "transfer",
-                "ok", amount.doubleValue(), accountFrom.getAccountBalance(), accountTo);
-        transactionRepo.save(transactionFrom);
-        transactionRepo.save(transactionTo);
+        return  "redirect:/transfer/betweenAccounts?success";
     }
 }

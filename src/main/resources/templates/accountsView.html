@@ -12,7 +12,7 @@
     <div class="row">
         <div class="col-lg-3 col-md-3"></div>
         <div class="col-lg-6 col-md-6">
-            <div th:if="${currency}">
+            <div th:if="${add}">
                 <a href="#" class="btn btn-info" role="button" th:href="@{/account/add}">Add account</a>
                 <p>&nbsp;</p>
             </div>
@@ -25,17 +25,8 @@
                         </div>
                         <div class="col-xs-6 text-right">
                             <h1>
-                                <!-- IF CURRENCY PROPERTY EXISTS -->
-                                <span th:if="${currency}">
-                                    <span th:switch="${account.currency.name()}">
-                                        <span th:replace="common/body :: switch-currency"></span>
-                                    </span>
-                                </span>
-                                <!-- ELSE -->
-                                <span th:unless="${currency}">
-                                    <span th:switch="${'RUR'}">
-                                        <span th:replace="common/body :: switch-currency"></span>
-                                    </span>
+                                <span th:switch="${account.currency.name()}">
+                                    <span th:replace="common/body :: switch-currency"></span>
                                 </span>
                                 <span th:text="${account.accountBalance}"></span>
                             </h1>

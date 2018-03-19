@@ -44,7 +44,7 @@ public class TransferController {
                             (item instanceof PrimaryAccount) ? "Primary" : "Saving",
                             item.getAccountBalance(),
                             item.getAccountNumber(),
-                            (item instanceof SavingAccount) ? "RUR" : ((PrimaryAccount) item).getCurrency().name()
+                            item.getCurrency()
                     )
             );
         });
@@ -66,8 +66,7 @@ public class TransferController {
         if (result.hasErrors() || command.getAmount().intValue() < 0) {
             return "betweenAccounts";
         }
-        accountService.transferBetweenAccounts(command.accountIdFrom, command.getAccountIdTo(), command.getAmount(), principal.getName());
-        return "redirect:/transfer/betweenAccounts?success";
+        return accountService.transferBetweenAccounts(command.getAccountIdFrom(), command.getAccountIdTo(), command.getAmount(), principal.getName());
     }
 
     @ExceptionHandler(NotEnoughAccountBalance.class)

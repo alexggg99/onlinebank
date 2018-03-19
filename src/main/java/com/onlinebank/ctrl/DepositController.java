@@ -49,7 +49,7 @@ public class DepositController {
                             (item instanceof PrimaryAccount) ? "Primary" : "Saving",
                             item.getAccountBalance(),
                             item.getAccountNumber(),
-                            (item instanceof SavingAccount) ? "RUR" : ((PrimaryAccount) item).getCurrency().name()
+                            item.getCurrency()
                     )
             );
         });

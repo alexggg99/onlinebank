@@ -13,7 +13,7 @@ import java.util.List;
 @Getter
 @Setter
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-public abstract class Account {
+public abstract class Account implements Monetary {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -30,4 +30,8 @@ public abstract class Account {
     @JsonIgnore
     private List<Transaction> transactionList;
 
+    @Override
+    public Currency getCurrency() {
+        return Currency.EUR;
+    }
 }
